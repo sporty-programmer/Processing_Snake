@@ -1,5 +1,6 @@
 Grid grid = new Grid();
 Snake snake = new Snake(new Coord(1, 1));
+Apples apples = new Apples(grid.width, grid.height);
 
 int clk = millis();
 
@@ -10,15 +11,14 @@ void setup() {
 
 void draw() {
 
-    if (millis() - clk < 500) {
-        return;
-    }
-
+    if (millis() - clk < 250) { return; }
     clk = millis();
-
     println("tick");
 
     background(0, 0, 0);
+
+    apples.spawnApple();
+    apples.draw(grid);
 
     snake.move();
     snake.draw(grid);

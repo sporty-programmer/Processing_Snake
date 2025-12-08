@@ -59,6 +59,8 @@ class Snake {
 
     public void move() {
 
+        // TODO: kollisionen checken (wände, äpfel, sich selbst)
+
         Coord coord = head.coord;
 
         switch (direction) {

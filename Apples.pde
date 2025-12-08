@@ -12,6 +12,9 @@ class Apples {
     }
 
     public void spawnApple() {
+
+        // TODO: checken ob feld frei (keine schlange, kein apfel)
+        
         apples.add(
             new Coord(
                 (int) random(0, this.gridWidth),
