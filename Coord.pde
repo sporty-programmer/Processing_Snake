@@ -6,4 +6,8 @@ class Coord {
         this.x = x;
         this.y = y;
     }
+
+    public Coord copy() {
+        return new Coord(x, y);
+    }
 }

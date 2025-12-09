@@ -16,9 +16,13 @@ enum Direction {
 }
 
 class Snake {
+
     public SnakePart head;
     public SnakePart tail;
-    public color snakeColor = color(255, 0, 0);
+
+    public color snakeHeadColor = color(255, 150, 150);
+    public color snakeBodyColor = color(255, 0, 0);
+
     public Direction direction = Direction.RIGHT;
 
     public Snake(Coord coord) {
@@ -32,22 +36,35 @@ class Snake {
 
     public void grow() {
 
-        // TODO: später richtig implementieren
-        tail.next = new SnakePart(
-            new Coord(
-                2 * tail.coord.x - tail.previous.coord.x,
-                2 * tail.coord.y - tail.previous.coord.y
-            )
-        );
+        Coord coord = tail.coord.copy();
+
+        if (length() == 1) {
+            switch (direction) {
+                case RIGHT: coord.x--; break;
+                case DOWN:  coord.y--; break;
+                case LEFT:  coord.x++; break;
+                case UP:    coord.y++; break;
+            }
+        }
+        else {
+            coord.x += tail.coord.x - tail.previous.coord.x;
+            coord.y += tail.coord.y - tail.previous.coord.y;
+        }
+
+        tail.next = new SnakePart(coord);
         tail.next.previous = tail;
         tail.next.next = null;
+
         tail = tail.next;
     }
 
     public int length() {
 
-        int len = 1;
+        if (head == null) {
+            // let the program crash in the next few lines
+        }
 
+        int len = 1;
         SnakePart current = head;
         while (current.next != null) {
             len++;
@@ -61,25 +78,13 @@ class Snake {
 
         // TODO: kollisionen checken (wände, äpfel, sich selbst)
 
-        Coord coord = head.coord;
+        Coord head_coord_new = head.coord.copy();
 
         switch (direction) {
-
-            case RIGHT:
-                coord.x++;
-                break;
-
-            case DOWN:
-                coord.y++;
-                break;
-
-            case LEFT:
-                coord.x--;
-                break;
-
-            case UP:
-                coord.y--;
-                break;
+            case RIGHT: head_coord_new.x++; break;
+            case DOWN:  head_coord_new.y++; break;
+            case LEFT:  head_coord_new.x--; break;
+            case UP:    head_coord_new.y--; break;
         }
 
         SnakePart current = tail;
@@ -87,14 +92,16 @@ class Snake {
             current.coord = current.previous.coord;
             current = current.previous;
         }
-        head.coord = coord;
+        head.coord = head_coord_new;
     }
 
     public void draw(Grid grid) {
 
         SnakePart current = snake.head;
+        grid.set(current.coord, snake.snakeHeadColor);
+        current = current.next;
         while(current != null) {
-            grid.set(current.coord, snake.snakeColor);
+            grid.set(current.coord, snake.snakeBodyColor);
             current = current.next;
         }
     }
