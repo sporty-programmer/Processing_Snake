@@ -1,20 +1,3 @@
-class SnakePart {
-  Coord coord;
-  SnakePart next;
-  SnakePart previous;
-
-  SnakePart(Coord coord) {
-    this.coord = coord;
-  }
-}
-
-enum Direction {
-  UP,
-  RIGHT,
-  DOWN,
-  LEFT
-}
-
 class Snake {
 
     public SnakePart head;
@@ -95,14 +78,22 @@ class Snake {
         head.coord = head_coord_new;
     }
 
-    public void draw(Grid grid) {
+    public Boolean lost(Grid grid) {
 
-        SnakePart current = snake.head;
-        grid.set(current.coord, snake.snakeHeadColor);
-        current = current.next;
-        while(current != null) {
-            grid.set(current.coord, snake.snakeBodyColor);
+        if (head.coord.x < 0 || head.coord.x >= grid.width ||
+            head.coord.y < 0 || head.coord.y >= grid.height) {
+                return true;
+            }
+
+        SnakePart current = head.next;
+        while (current != null) {
+            if (head.coord.x == current.coord.x &&
+                head.coord.y == current.coord.y) {
+                    return true;
+                }
             current = current.next;
         }
+
+        return false;
     }
 }

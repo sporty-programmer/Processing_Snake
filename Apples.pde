@@ -26,10 +26,4 @@ class Apples {
     public void dispawnApple(Coord coord) {
         apples.remove(coord);
     }
-
-    public void draw(Grid grid) {
-        for (Coord apple : apples) {
-            grid.set(apple, this.appleColor);
-        }
-    }
 }

@@ -29,6 +29,8 @@ void setup() {
     }
 
     apples.spawnApple();
+
+    focused = true;
 }
 
 void draw() {
@@ -38,11 +40,14 @@ void draw() {
 
     background(0, 0, 0);
 
-    apples.draw(grid);
-
     snake.move();
-    snake.draw(grid);
+    if (snake.lost(grid)) {
+        println("You lost! Final length: " + snake.length());
+        noLoop();
+    }
 
+    grid.draw_apples(apples);
+    grid.draw_snake(snake);
     grid.draw();
     grid.reset();
 }
@@ -64,6 +69,29 @@ void keyPressed() {
             break;
 
         case UP:
+            snake.direction = Direction.UP;
+            break;
+    }
+
+    switch (key) {
+
+        case 'd':
+        case 'D':
+            snake.direction = Direction.RIGHT;
+            break;
+
+        case 's':
+        case 'S':
+            snake.direction = Direction.DOWN;
+            break;
+
+        case 'a':
+        case 'A':
+            snake.direction = Direction.LEFT;
+            break;
+
+        case 'w':
+        case 'W':
             snake.direction = Direction.UP;
             break;
     }
